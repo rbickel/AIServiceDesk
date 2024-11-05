@@ -1,0 +1,70 @@
+﻿@page "/"
+@using AILogic
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<script src="scroll.js"></script>
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+@if (aiAssistant != null)
+{
+    <div @ref="chatContainer" id="chatContainer"
+    style="border:1px solid #ccc; padding:10px; width:300px; height:400px; overflow-y:scroll;">
+    @foreach (var message in aiAssistant.ChatMessages)
+        {
+            @if (message.Role == Microsoft.SemanticKernel.ChatCompletion.AuthorRole.User)
+            {
+                <div style="text-align:right; margin-bottom:10px;">
+                    <strong>You: </strong> @message.ToString()
+                </div>
+            }
+            else if (message.Role == Microsoft.SemanticKernel.ChatCompletion.AuthorRole.Assistant)
+            {
+                <div style="text-align:left; margin-bottom:10px;">
+                    <strong>Assistant: </strong> @message.ToString()
+                </div>
+            }
+        }
+    </div>
+}
+
+<div style="margin-top:10px;">
+    <input @bind="NewMessage" placeholder="Type your message here" style="width: 80%;" />
+    <button @onclick="SendMessage">Send</button>
+</div>
+
+@code {
+    private string NewMessage = string.Empty;
+    private ElementReference chatContainer;
+    private AIAssistant aiAssistant;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            aiAssistant = new AIAssistant();
+            await aiAssistant.AssistAsync();
+            
+            // refresh the UI
+            StateHasChanged();
+        }
+    }
+
+    [JSInvokable]
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(NewMessage))
+        {
+            await aiAssistant.AddUserMessage(NewMessage);
+            NewMessage = string.Empty;
+
+            // Call JavaScript function to scroll to the bottom
+            await JSRuntime.InvokeVoidAsync("scrollToBottom", "chatContainer");
+
+            // refresh the UI
+            StateHasChanged();
+        }
+    }
+}
