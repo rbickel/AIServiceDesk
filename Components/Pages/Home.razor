@@ -11,7 +11,7 @@
 @if (aiAssistant != null)
 {
     <div @ref="chatContainer" id="chatContainer"
-    style="border:1px solid #ccc; padding:10px; width:300px; height:400px; overflow-y:scroll;">
+    style="border:1px solid #ccc; padding:10px; width:100%; height:400px; overflow-y:scroll;">
     @foreach (var message in aiAssistant.ChatMessages)
         {
             @if (message.Role == Microsoft.SemanticKernel.ChatCompletion.AuthorRole.User)
