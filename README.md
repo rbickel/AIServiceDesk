@@ -4,28 +4,16 @@ AI Service Desk is an AI-powered helpdesk assistant built with C# and .NET. It p
 
 ## Features
 
-- **AI Assistant**: An AI assistant implemented in 
-
-AIAssistant
-
- that interacts with users.
-- **Chat History**: Maintains conversation history using the 
-
-ChatMessages
-
- property.
-- **Plugin Support**: Integrates plugins like 
-
-HelpdeskPlugin
-
- to extend functionality.
+- **AI Assistant**: An AI assistant implemented  in AIAssistant that interacts with users.
+- **Chat History**: Maintains conversation history using the ChatMessages property.
+- **Plugin Support**: Integrates plugins like HelpdeskPlugin to extend functionality.
 
 ## Getting Started
 
 ### Prerequisites
 
 - [.NET SDK](https://dotnet.microsoft.com/download)
-- OpenAI API key
+- Azure OpenAI API key
 
 ### Installation
 
@@ -49,15 +37,7 @@ HelpdeskPlugin
 
 ### Configuration
 
-Update the settings in 
-
-Settings.cs
-
- or 
-
-appsettings.json
-
- with your OpenAI API key and model information.
+Update the settings in settings.json with your Azure OpenAI API key and endpoint.
 
 ## Usage
 
@@ -67,43 +47,15 @@ Run the application:
 dotnet run
 ```
 
-The AI assistant will start and can assist with tasks like password resets. It maintains chat history using the 
-
-ChatMessages
-
- property.
+The AI assistant will start and can assist with tasks like password resets. It maintains chat history using the ChatMessages property.
 
 ## Project Structure
 
-- 
-
-AILogic
-
- - Contains the AI assistant logic.
-- 
-
-Components
-
- - UI components for the application.
-- 
-
-Plugins
-
- - Plugins like 
-
-HelpdeskPlugin
-
- for additional functionality.
-- 
-
-Program.cs
-
- - Main entry point of the application.
-- 
-
-Settings.cs
-
- - Configuration settings.
+ - AILogic - Contains the AI assistant logic.
+ - Components - UI components for the application.
+ - Plugins - Plugins like HelpdeskPlugin for additional functionality.
+ - Program.cs - Main entry point of the application.
+ - Settings.cs - Configuration settings.
 
 ## Contributing
 
