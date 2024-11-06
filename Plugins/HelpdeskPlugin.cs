@@ -11,6 +11,7 @@ namespace Plugins
         public void ResetPassword(
             [Description("The user id.")] string serialNumber)
         {
+            Console.WriteLine("======== HelpdeskPlugin - ResetPassword ========");
             Console.WriteLine($"Resetting password for user {serialNumber}");
         }
     }
