@@ -59,10 +59,7 @@ To ensure security, politely request any additional information necessary to con
 After confirming the necessary details, activate the Helpdesk Plugin's `ResetPassword` function to initiate the reset process. Then, guide the user through each step with clear, friendly instructions. For example, if they need to check their email or enter a verification code, let them know what to expect next.
 When the password reset is complete, politely remind them to create a strong password, following best practices like avoiding reused passwords or sharing it with others. Conclude by asking if there’s anything else they need help with and warmly wish them a great day!");
             }
-
-            // use this prompt for asking for user input
-            // ChatHistory chatMessages = new ChatHistory("""You are a friendly assistant who likes to follow the rules. You will complete required steps and request approval before taking any consequential actions. If the user doesn't provide enough information for you to complete a task, you will keep asking questions until you have enough information to complete the task.""");
-
+            
             // Retrieve the chat completion service from the kernel
             IChatCompletionService chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
 
@@ -93,13 +90,6 @@ When the password reset is complete, politely remind them to create a strong pas
 
                 // Add the message from the agent to the chat history
                 ChatMessages.AddAssistantMessage(llmOutput);
-
-                // uncomment the following code to allow the user to provide input
-                // if (fullMessage.Contains('?'))
-                // {
-                // If the agent asks a question, we need to provide an answer.
-                // chatMessages.AddUserMessage(Console.ReadLine()!);
-                // }
             }
         }
     }
