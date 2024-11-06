@@ -2,6 +2,8 @@
 
 AI Service Desk is an AI-powered helpdesk assistant built with C# and .NET. It provides users with an interactive assistant for handling password resets and other account-related issues.
 
+![AI Service Desk app screenshot.](screenshot.png)
+
 ## Features
 
 - **AI Assistant**: An AI assistant implemented  in AIAssistant that interacts with users.
