@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using AILogic
+@using Microsoft.Extensions.Options
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
 
@@ -11,8 +12,8 @@
 @if (aiAssistant != null)
 {
     <div @ref="chatContainer" id="chatContainer"
-    style="border:1px solid #ccc; padding:10px; width:100%; height:400px; overflow-y:scroll;">
-    @foreach (var message in aiAssistant.ChatMessages)
+        style="border:1px solid #ccc; padding:10px; width:100%; height:400px; overflow-y:scroll;">
+        @foreach (var message in aiAssistant.ChatMessages)
         {
             @if (message.Role == Microsoft.SemanticKernel.ChatCompletion.AuthorRole.User)
             {
@@ -36,6 +37,10 @@
 </div>
 
 @code {
+
+    [Inject]
+    protected IOptions<AISettings> Settings { get; set; } = default!;
+
     private string NewMessage = string.Empty;
     private ElementReference chatContainer;
     private AIAssistant aiAssistant;
@@ -44,9 +49,9 @@
     {
         if (firstRender)
         {
-            aiAssistant = new AIAssistant();
+            aiAssistant = new AIAssistant(Settings);
             await aiAssistant.AssistAsync();
-            
+
             // refresh the UI
             StateHasChanged();
         }
