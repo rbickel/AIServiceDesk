@@ -1,23 +1,31 @@
+using AILogic;
+using Microsoft.Extensions.Options;
 using AIServiceDesk.Components;
-
-
-// initialize AI model
-bool useAzureOpenAI = true;
-Settings.LoadAzureEndpoint(useAzureOpenAI);
-Settings.LoadModel(useAzureOpenAI);
-Settings.LoadApiKey(useAzureOpenAI);
-Console.WriteLine();
+using Azure.Communication.CallAutomation;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true);
+builder.Configuration.AddJsonFile("appsettings.{Environment}.json", optional: true);
+builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+AISettings aiSettings = new();
+ACSSettings acsSettings = new();
+builder.Configuration.GetSection(nameof(AISettings)).Bind(aiSettings);
+builder.Configuration.GetSection(nameof(AISettings)).Bind(acsSettings);
+builder.Services
+    .Configure<AISettings>(builder.Configuration.GetSection(key: nameof(AISettings)))
+    .Configure<ACSSettings>(builder.Configuration.GetSection(key: nameof(ACSSettings)))
+    .AddScoped<AIAssistant>()  // Add the AIAssistant to the DI container
+    .AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddHubOptions(options =>
             {
                 options.MaximumReceiveMessageSize = 2048 * 1024;
             });
 
+builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,12 +36,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.MapRazorComponents<App>()
+app.UseStaticFiles().UseRouting().UseAntiforgery().UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+});
+app.UseAntiforgery();
+app.UseRouting();
 
 app.Run();
